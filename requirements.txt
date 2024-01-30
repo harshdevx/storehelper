@@ -1,0 +1,6 @@
+PyJWT
+requests
+python-dotenv
+cryptography
+cffi
+pyyaml
