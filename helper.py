@@ -25,7 +25,7 @@ def create_google_build():
 
 # apple auto upload
 def process_appstore(appstore_creds):
-    ipa_file = f"{project_dir}/build/ios/ipa/Kliqit\ Group\ Counter.ipa"
+    ipa_file = f"{project_dir}/build/ios/ipa/app.ipa"
     command = f"xcrun altool --upload-app --type ios -f {ipa_file} --apiKey {appstore_creds.get('appstore_api_key')} --apiIssuer {appstore_creds.get('appstore_issuer_id')}"
     os.system(command)
 
@@ -35,7 +35,7 @@ def process_playstore(googlestore_creds):
     playstore_client_email = googlestore_creds.get("client_email")
     playstore_private_key = googlestore_creds.get("private_key")
     playstore_token_uri = googlestore_creds.get("token_uri")
-    package_name: str = "io.kliqit.app"
+    package_name: str = "test.app"
 
     iat = time.time()
     exp = iat + 600
@@ -135,7 +135,7 @@ def main():
         "X-VAULT-TOKEN": vault_token
     }
 
-    appstore_creds_response = requests.get(url=f'{config.get("VAULT_URL")}/kliqit/data/apple-developer-api', headers=request_headers)
+    appstore_creds_response = requests.get(url=f'{config.get("VAULT_URL")}/secret/data/apple-developer-api', headers=request_headers)
 
     if appstore_creds_response.ok: 
         appstore_creds: dict = {
@@ -147,7 +147,7 @@ def main():
         print("processing apple auto deploy")
 
 
-    googlestore_creds = requests.get(url=f'{config.get("VAULT_URL")}/kliqit/data/google-developer-api', headers=request_headers)
+    googlestore_creds = requests.get(url=f'{config.get("VAULT_URL")}/secret/data/google-developer-api', headers=request_headers)
 
     if googlestore_creds.ok: 
         # create new google build
